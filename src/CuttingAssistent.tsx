@@ -115,11 +115,6 @@ export const CuttingAssistent = () => {
 
     cuttingsString.forEach((string) => {
       if (
-        string.finishedLength < 140 &&
-        (string.l1Designation !== "" || string.l2Designation !== "")
-      ) {
-        detailsSortMini.push(string);
-      } else if (
         string.finishedWidth < 140 &&
         (string.w1Designation !== "" || string.w2Designation !== "")
       ) {
