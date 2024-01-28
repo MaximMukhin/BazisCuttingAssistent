@@ -91,6 +91,7 @@ export const CuttingAssistent = () => {
   ];
 
   const handleFileAsync = async (e: any) => {
+    console.log("e", e.target.files.length);
     const file = e.target.files[0];
     setFileName(file.name.split(".")[0]);
     setFileNameDisplay(file.name);
@@ -109,13 +110,33 @@ export const CuttingAssistent = () => {
     }
   };
 
+  // const handleFileAsync = async (e: any) => {
+  //   console.log("e", e);
+  //   const file = e.target.files[0];
+  //   setFileName(file.name.split(".")[0]);
+  //   setFileNameDisplay(file.name);
+  //   const checkExtension = file.name.split(".").slice(-1)[0];
+  //   if (checkExtension === "xlsx" || checkExtension === "xls") {
+  //     const data = await file.arrayBuffer();
+  //     const workbook = read(data);
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  //     const articlesAddName = utils.sheet_add_aoa(worksheet, [column], {
+  //       origin: "A1",
+  //     });
+  //     const articlesData: any = utils.sheet_to_json(articlesAddName);
+  //     setXlsxParser(articlesData);
+  //   } else {
+  //     console.error("Неверный формат файла");
+  //   }
+  // };
+
   const sortCutStrings = (cuttingsString: XlsxParserT[]) => {
     const detailsSortBig: XlsxParserT[] = [];
     const detailsSortMini: XlsxParserT[] = [];
 
     cuttingsString.forEach((string) => {
       if (
-        string.finishedWidth < 140 &&
+        string.finishedWidth <= 140 &&
         (string.w1Designation !== "" || string.w2Designation !== "")
       ) {
         detailsSortMini.push(string);
@@ -198,7 +219,12 @@ export const CuttingAssistent = () => {
         <ButtonGroup>
           <Button variant="contained" size={"small"} component="label">
             Загрузить файл .XLSX
-            <input type="file" onChange={(e) => handleFileAsync(e)} hidden />
+            <input
+              type="file"
+              multiple
+              onChange={(e) => handleFileAsync(e)}
+              hidden
+            />
           </Button>
           <Button
             disabled={!xlsxParser.length}
